@@ -1,0 +1,192 @@
+:root {
+  --pastel-pink: #ffd6e7;
+  --rose-red: #c9184a;
+  --soft-white: rgba(255, 255, 255, 0.75);
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(180deg, #ffd6e7, #fff0f5);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-out {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* App Container */
+.app-container {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Card */
+.card {
+  background: var(--soft-white);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 30px;
+  padding: 40px 25px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(201, 24, 74, 0.2);
+  animation: fadeIn 0.8s ease;
+}
+
+/* Headings */
+h1 {
+  font-size: 28px;
+  color: var(--rose-red);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+/* OTP Container */
+.otp-container {
+  display: flex;
+  justify-content: center; /* fixed uneven spacing */
+  gap: 12px;
+  margin-bottom: 25px;
+  width: 100%;
+}
+
+/* OTP Inputs */
+.otp-input {
+  width: 44px;
+  height: 55px;
+  text-align: center;
+  font-size: 22px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  background: white;
+  transition: all 0.2s ease;
+  flex: 0 0 44px; /* prevents stretch */
+}
+
+.otp-input:focus {
+  outline: none;
+  border-color: var(--rose-red);
+  box-shadow: 0 0 0 2px rgba(201, 24, 74, 0.15);
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  border: none;
+  background: var(--rose-red);
+  color: white;
+  font-size: 17px;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+  opacity: 0.85;
+}
+
+/* Error Message */
+#errorMessage {
+  margin-top: 15px;
+  color: var(--rose-red);
+  font-size: 14px;
+}
+
+/* Penguin Canvas */
+#penguinCanvas {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  pointer-events: auto;
+  z-index: 0;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Small phone adjustment */
+@media (max-width: 380px) {
+  .otp-input {
+    width: 38px;
+    height: 50px;
+    font-size: 20px;
+    flex: 0 0 38px;
+  }
+}
+/* =========================
+   COUNTDOWN ABOVE CARD
+========================= */
+
+.countdown-wrapper {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.countdown-title {
+  font-size: 14px;
+  color: var(--rose-red);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.countdown {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.countdown div {
+  flex: 1;
+  background: white;
+  border-radius: 16px;
+  padding: 12px 6px;
+  box-shadow: 0 6px 15px rgba(201, 24, 74, 0.12);
+}
+
+.countdown span {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--rose-red);
+}
+
+.countdown small {
+  font-size: 11px;
+  color: #666;
+}
+
+

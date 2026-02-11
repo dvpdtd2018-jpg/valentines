@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine? ❤️</title>
+
+<style>
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(180deg, #ffccd5, #fff0f5);
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* =========================
+   PHOTO LAYER (BEHIND CARD)
+========================= */
+
+#photoLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.container {
+  position: relative;
+  z-index: 10; /* always above photos */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(20px);
+  padding: 40px 30px;
+  border-radius: 30px;
+  box-shadow: 0 20px 40px rgba(201, 24, 74, 0.2);
+  max-width: 400px;
+  width: 90%;
+}
+
+h1 {
+  color: #c9184a;
+  margin-bottom: 15px;
+}
+
+p {
+  color: #555;
+  min-height: 40px;
+}
+
+.buttons {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+button {
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#yesBtn {
+  background-color: #38b000;
+  color: white;
+}
+
+#noBtn {
+  background-color: #d90429;
+  color: white;
+}
+
+/* =========================
+   POLAROID STYLE
+========================= */
+
+.polaroid {
+  position: absolute;
+  width: 140px;
+  background: white;
+  padding: 10px 10px 30px 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  border-radius: 6px;
+  opacity: 0;
+  animation: dropIn 0.6s ease forwards;
+}
+
+.polaroid img {
+  width: 100%;
+  border-radius: 4px;
+}
+
+/* DROP FROM TOP ANIMATION */
+@keyframes dropIn {
+  0% {
+    transform: translateY(-200px) rotate(var(--rotation));
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px) rotate(var(--rotation));
+    opacity: 1;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="photoLayer"></div>
+
+<div class="container">
+  <div class="card">
+    <h1>Will you be my Valentine? ❤️ (straight to the point)</h1>
+    <p id="message">I promise it'll be sweet 🌸</p>
+
+    <div class="buttons">
+      <button id="yesBtn">Yes 💚</button>
+      <button id="noBtn">No 💔</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const message = document.getElementById("message");
+const photoLayer = document.getElementById("photoLayer");
+
+let noScale = 1;
+let yesScale = 1;
+let noClickCount = 0;
+
+const messages = [
+  "Are you sure? 🥺",
+  "Maybe give it another thought? 🌸",
+  "I’ll bring flowers though 🌷",
+  "I’ll be very sweet about it 💕",
+  "You might regret pressing no 😭",
+  "Okay but... please? 🥹"
+];
+
+let messageIndex = 0;
+
+const photos = [
+  "chotdon/1.jpg",
+  "chotdon/2.jpg",
+  "chotdon/3.jpg",
+  "chotdon/4.jpg",
+  "chotdon/5.jpg",
+  "chotdon/6.jpg",
+  "chotdon/7.jpg",
+  "chotdon/8.jpg"
+
+];
+
+let photoIndex = 0;
+
+/* =========================
+   NO CLICK
+========================= */
+
+noBtn.addEventListener("click", () => {
+
+  noClickCount++;
+
+  if (noClickCount >= 10) {
+    yesBtn.textContent = "Yes (as a joke?) 💚";
+  }
+
+  noScale -= 0.1;
+  yesScale += 0.1;
+
+  if (noScale > 0.3) {
+    noBtn.style.transform = `scale(${noScale})`;
+  }
+
+  yesBtn.style.transform = `scale(${yesScale})`;
+
+  if (messageIndex < messages.length) {
+    message.textContent = messages[messageIndex];
+    messageIndex++;
+  } else {
+    message.textContent = "Look at all these memories though 🥺";
+  }
+
+  if (photoIndex < photos.length) {
+    spawnPolaroid(photos[photoIndex]);
+    photoIndex++;
+  }
+
+});
+
+/* =========================
+   SPAWN PHOTO (BEHIND CARD)
+========================= */
+
+function spawnPolaroid(src) {
+
+  const polaroid = document.createElement("div");
+  polaroid.className = "polaroid";
+
+  const img = document.createElement("img");
+  img.src = src;
+
+  polaroid.appendChild(img);
+
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+
+  // Random horizontal position
+  const randomX = Math.random() * (screenWidth - 160);
+
+  // Decide top third or bottom third
+  const spawnTop = Math.random() < 0.5;
+
+  let randomY;
+
+  if (spawnTop) {
+    // Top third
+    randomY = Math.random() * (screenHeight / 3 - 220);
+  } else {
+    // Bottom third
+    randomY = screenHeight * (2 / 3) + Math.random() * (screenHeight / 3 - 220);
+  }
+
+  polaroid.style.left = randomX + "px";
+  polaroid.style.top = randomY + "px";
+
+  const rotation = (Math.random() * 30 - 15) + "deg";
+  polaroid.style.setProperty("--rotation", rotation);
+
+  photoLayer.appendChild(polaroid);
+}
+
+
+/* =========================
+   YES BUTTON
+========================= */
+
+yesBtn.addEventListener("click", () => {
+
+  document.body.innerHTML = `
+    <div style="
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      background:linear-gradient(180deg,#ffccd5,#fff0f5);
+      font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+      text-align:center;
+      color:#c9184a;
+      font-size:24px;
+      font-weight:600;
+    ">
+      Yayyy ❤️ Redirecting...
+    </div>
+  `;
+
+  setTimeout(() => {
+    window.location.href = "soc.html";
+  }, 1500);
+
+});
+
+</script>
+
+</body>
+</html>

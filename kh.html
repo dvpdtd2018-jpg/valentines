@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For Mom & Sisters 💗</title>
+
+<style>
+:root {
+  --pastel-pink: #ffd6e7;
+  --rose-red: #c9184a;
+  --soft-white: rgba(255,255,255,0.7);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(180deg, #ffd6e7, #fff0f5);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+body.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.container {
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
+}
+
+.card {
+  background: var(--soft-white);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 30px;
+  padding: 40px 25px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(201, 24, 74, 0.2);
+}
+
+h1 {
+  margin: 0;
+  font-size: 28px;
+  color: var(--rose-red);
+  font-weight: 600;
+}
+
+.cat-image {
+  width: 160px;
+  margin: 25px auto 10px auto;
+  display: block;
+  animation: floatCat 3s ease-in-out infinite;
+}
+
+@keyframes floatCat {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+.message {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.signature {
+  margin-top: 30px;
+  font-size: 18px;
+  color: var(--rose-red);
+  font-weight: 500;
+}
+
+/* Floating Hearts */
+
+.heart {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: var(--rose-red);
+  transform: rotate(45deg);
+  animation: floatUp linear infinite;
+  opacity: 0.6;
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: var(--rose-red);
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -8px;
+  left: 0;
+}
+
+.heart::after {
+  left: -8px;
+  top: 0;
+}
+
+@keyframes floatUp {
+  from {
+    transform: translateY(0) rotate(45deg);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(-120vh) rotate(45deg);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Kính gửi mẹ và hai em 💗</h1>
+
+    <!-- 🐱 Cat GIF -->
+    <img src="meohoa.gif" alt="Cat holding flowers" class="cat-image">
+
+    <div class="message">
+      Cảm ơn mẹ và hai em đã luôn là nơi bình yên nhất của con,  
+      là những người luôn ủng hộ con nhiều nhất,  
+      và là lý do khiến ngôi nhà của chúng ta luôn ấm áp và tràn đầy yêu thương.  
+
+      <br><br>
+
+      Con thật sự biết ơn những điều nhỏ bé  
+      mà mẹ và hai em làm mỗi ngày —  
+      dù đôi khi có thể trông rất giản dị.  
+
+      <br><br>
+
+      Con mong món quà nhỏ này sẽ khiến mẹ và hai em mỉm cười 🌸
+    </div>
+
+    <div class="signature">
+      Valentine 💕😛
+    </div>
+  </div>
+</div>
+
+<script>
+window.onload = () => {
+  document.body.classList.add("loaded");
+};
+
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  heart.style.bottom = "-20px";
+  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 8000);
+}
+
+setInterval(createHeart, 600);
+</script>
+
+</body>
+</html>

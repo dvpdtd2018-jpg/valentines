@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#ffd6e7">
+  <title>💗</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <canvas id="penguinCanvas"></canvas>
+
+  <div class="app-container">
+
+  <!-- 💘 Countdown ABOVE the card -->
+  <div class="countdown-wrapper">
+    <div class="countdown-title">💘 Valentine’s Day Countdown 💘</div>
+    <div class="countdown" id="countdown">
+      <div><span id="days">0</span><small>Days</small></div>
+      <div><span id="hours">0</span><small>Hours</small></div>
+      <div><span id="minutes">0</span><small>Minutes</small></div>
+      <div><span id="seconds">0</span><small>Seconds</small></div>
+    </div>
+  </div>
+
+  <!-- Existing Card -->
+  <div class="card">
+    <h1>Enter Passcode</h1>
+    <p class="subtitle">This page is protected 💕</p>
+
+    <div class="otp-container">
+  <input type="tel" maxlength="1" class="otp-input" placeholder="D">
+  <input type="tel" maxlength="1" class="otp-input" placeholder="D">
+  <input type="tel" maxlength="1" class="otp-input" placeholder="M">
+  <input type="tel" maxlength="1" class="otp-input" placeholder="M">
+  <input type="tel" maxlength="1" class="otp-input" placeholder="Y">
+  <input type="tel" maxlength="1" class="otp-input" placeholder="Y">
+</div>
+
+
+    <button onclick="checkPassword()">Unlock</button>
+    <p id="errorMessage"></p>
+  </div>
+
+</div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
