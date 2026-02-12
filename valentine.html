@@ -6,21 +6,16 @@
 <title>Be My Valentine? ❤️</title>
 
 <style>
-
 body {
   margin: 0;
   height: 100vh;
   background: linear-gradient(180deg, #ffccd5, #fff0f5);
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  text-align: center;
   overflow: hidden;
   position: relative;
 }
 
-/* =========================
-   PHOTO LAYER (BEHIND CARD)
-========================= */
-
+/* PHOTO BACKGROUND */
 #photoLayer {
   position: fixed;
   inset: 0;
@@ -28,9 +23,10 @@ body {
   pointer-events: none;
 }
 
+/* MAIN CARD */
 .container {
   position: relative;
-  z-index: 10; /* always above photos */
+  z-index: 10;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -38,44 +34,48 @@ body {
 }
 
 .card {
-  background: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.92);
   backdrop-filter: blur(20px);
   padding: 40px 30px;
   border-radius: 30px;
   box-shadow: 0 20px 40px rgba(201, 24, 74, 0.2);
   max-width: 400px;
   width: 90%;
+  text-align: center;
+  transition: all 0.4s ease;
 }
 
-h1 {
-  color: #c9184a;
-  margin-bottom: 15px;
-}
+h1 { color: #c9184a; }
 
 p {
   color: #555;
   min-height: 40px;
+  transition: opacity 0.4s ease;
 }
 
+/* BUTTON STACK */
 .buttons {
   margin-top: 25px;
   display: flex;
-  justify-content: center;
-  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.4s ease;
 }
 
 button {
   border: none;
-  padding: 12px 25px;
-  font-size: 16px;
-  border-radius: 20px;
+  padding: 14px 35px;
+  font-size: 18px;
+  border-radius: 30px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
 }
 
 #yesBtn {
   background-color: #38b000;
   color: white;
+  font-weight: 600;
 }
 
 #noBtn {
@@ -83,18 +83,14 @@ button {
   color: white;
 }
 
-/* =========================
-   POLAROID STYLE
-========================= */
-
+/* POLAROID */
 .polaroid {
   position: absolute;
   width: 140px;
   background: white;
   padding: 10px 10px 30px 10px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
   border-radius: 6px;
-  opacity: 0;
   animation: dropIn 0.6s ease forwards;
 }
 
@@ -103,16 +99,33 @@ button {
   border-radius: 4px;
 }
 
-/* DROP FROM TOP ANIMATION */
 @keyframes dropIn {
-  0% {
+  from {
     transform: translateY(-200px) rotate(var(--rotation));
     opacity: 0;
   }
-  100% {
+  to {
     transform: translateY(0px) rotate(var(--rotation));
     opacity: 1;
   }
+}
+
+/* TAKEOVER MODE */
+.card.takeover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card.takeover p,
+.card.takeover #noBtn {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.card.takeover #yesBtn {
+  transform: scale(1.6);
+  margin-top: 20px;
 }
 
 </style>
@@ -123,8 +136,8 @@ button {
 <div id="photoLayer"></div>
 
 <div class="container">
-  <div class="card">
-    <h1>Will you be my Valentine? ❤️ (straight to the point)</h1>
+  <div class="card" id="card">
+    <h1>Will you be my Valentine? ❤️</h1>
     <p id="message">I promise it'll be sweet 🌸</p>
 
     <div class="buttons">
@@ -135,15 +148,14 @@ button {
 </div>
 
 <script>
-
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const message = document.getElementById("message");
 const photoLayer = document.getElementById("photoLayer");
+const card = document.getElementById("card");
 
-let noScale = 1;
-let yesScale = 1;
 let noClickCount = 0;
+let yesScale = 1;
 
 const messages = [
   "Are you sure? 🥺",
@@ -151,10 +163,9 @@ const messages = [
   "I’ll bring flowers though 🌷",
   "I’ll be very sweet about it 💕",
   "You might regret pressing no 😭",
-  "Okay but... please? 🥹"
+  "Okay but... please? 🥹",
+  "Look at all these memories though 🥺"
 ];
-
-let messageIndex = 0;
 
 const photos = [
   "chotdon/1.JPG",
@@ -165,50 +176,33 @@ const photos = [
   "chotdon/6.JPG",
   "chotdon/7.JPG",
   "chotdon/8.JPG"
-
 ];
 
 let photoIndex = 0;
 
-/* =========================
-   NO CLICK
-========================= */
-
+/* NO CLICK */
 noBtn.addEventListener("click", () => {
 
   noClickCount++;
 
-  if (noClickCount >= 10) {
-    yesBtn.textContent = "Yes (as a joke?) 💚";
-  }
-
-  noScale -= 0.1;
   yesScale += 0.1;
-
-  if (noScale > 0.3) {
-    noBtn.style.transform = `scale(${noScale})`;
-  }
-
   yesBtn.style.transform = `scale(${yesScale})`;
 
-  if (messageIndex < messages.length) {
-    message.textContent = messages[messageIndex];
-    messageIndex++;
-  } else {
-    message.textContent = "Look at all these memories though 🥺";
+  if (noClickCount <= messages.length) {
+    message.textContent = messages[noClickCount - 1];
   }
 
-  if (photoIndex < photos.length) {
-    spawnPolaroid(photos[photoIndex]);
+  for (let i = 0; i < 2; i++) {
+    spawnPolaroid(photos[photoIndex % photos.length]);
     photoIndex++;
   }
 
+  if (noClickCount === 8) {
+    takeOver();
+  }
 });
 
-/* =========================
-   SPAWN PHOTO (BEHIND CARD)
-========================= */
-
+/* CONTROLLED SPAWN */
 function spawnPolaroid(src) {
 
   const polaroid = document.createElement("div");
@@ -216,30 +210,21 @@ function spawnPolaroid(src) {
 
   const img = document.createElement("img");
   img.src = src;
-
   polaroid.appendChild(img);
 
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
 
-  // Random horizontal position
+  const centerYOptions = [
+    screenHeight / 10,
+    screenHeight * 14 / 15
+  ];
+
+  const chosenCenterY = centerYOptions[Math.floor(Math.random() * 2)];
   const randomX = Math.random() * (screenWidth - 160);
 
-  // Decide top third or bottom third
-  const spawnTop = Math.random() < 0.5;
-
-  let randomY;
-
-  if (spawnTop) {
-    // Top third
-    randomY = Math.random() * (screenHeight / 3 - 220);
-  } else {
-    // Bottom third
-    randomY = screenHeight * (2 / 3) + Math.random() * (screenHeight / 3 - 220);
-  }
-
   polaroid.style.left = randomX + "px";
-  polaroid.style.top = randomY + "px";
+  polaroid.style.top = (chosenCenterY - 110) + "px";
 
   const rotation = (Math.random() * 30 - 15) + "deg";
   polaroid.style.setProperty("--rotation", rotation);
@@ -247,13 +232,17 @@ function spawnPolaroid(src) {
   photoLayer.appendChild(polaroid);
 }
 
+/* TAKEOVER */
+function takeOver() {
 
-/* =========================
-   YES BUTTON
-========================= */
+  noBtn.disabled = true;
+  yesBtn.textContent = "YES❤️❤️❤️❤️";
 
+  card.classList.add("takeover");
+}
+
+/* YES CLICK */
 yesBtn.addEventListener("click", () => {
-
   document.body.innerHTML = `
     <div style="
       display:flex;
@@ -264,7 +253,7 @@ yesBtn.addEventListener("click", () => {
       font-family:-apple-system,BlinkMacSystemFont,sans-serif;
       text-align:center;
       color:#c9184a;
-      font-size:24px;
+      font-size:26px;
       font-weight:600;
     ">
       Yayyy ❤️ Redirecting...
@@ -274,9 +263,7 @@ yesBtn.addEventListener("click", () => {
   setTimeout(() => {
     window.location.href = "soc.html";
   }, 1500);
-
 });
-
 </script>
 
 </body>
